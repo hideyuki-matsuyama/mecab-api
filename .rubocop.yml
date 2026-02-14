@@ -32,6 +32,7 @@ Layout/TrailingEmptyLines:
 # return の次行に空白行を強制
 Layout/EmptyLineAfterGuardClause:
   Enabled: true
+
 # クラスやモジュールのドキュメントコメントを強制
 Style/Documentation:
   Enabled: true

@@ -1,5 +1,6 @@
 --output-dir docs/
 --markup markdown
 -
+
 README.md
 app/**/*.rb
