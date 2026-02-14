@@ -8,13 +8,19 @@ class MecabParser
   #   各ハッシュは以下のキーを持ちます:
   #   - `:surface` [String] 表層形。
   #   - `:feature` [String] 品詞などの素性情報。
-  def self.parse(text)
+  def self.execute(text)
     Rails.cache.fetch(text, expires_in: 1.hours) do
-      ret = []
-      Natto::MeCab.new.parse(text) do |mecab_node|
-        ret << { surface: mecab_node.surface, feature: mecab_node.feature } unless mecab_node.is_eos?
-      end
-      ret
+      self.parse text
     end
   end
+
+  def self.parse(text)
+    ret = []
+    Natto::MeCab.new.parse(text) do |mecab_node|
+      ret << { surface: mecab_node.surface, feature: mecab_node.feature } unless mecab_node.is_eos?
+    end
+    ret
+  end
+
+  private_class_method :parse
 end

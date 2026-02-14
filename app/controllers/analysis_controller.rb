@@ -7,7 +7,7 @@ class AnalysisController < ApplicationController
   def parse
     text = params[:text]
     if text.present?
-      render json: { status: "success", data: MecabParser.parse(text) }
+      render json: { status: "success", data: MecabParser.execute(text) }
     else
       render json: { status: "error", message: "Text is required" }, status: :bad_request
     end
