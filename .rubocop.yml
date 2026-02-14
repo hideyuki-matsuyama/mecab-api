@@ -28,3 +28,12 @@ Layout/EmptyLinesAroundClassBody:
 # ファイル末尾の余分な空白行を禁止
 Layout/TrailingEmptyLines:
   Enabled: true
+
+# return の次行に空白行を強制
+Layout/EmptyLineAfterGuardClause:
+  Enabled: true
+# クラスやモジュールのドキュメントコメントを強制
+Style/Documentation:
+  Enabled: true
+  Exclude:
+    - 'config/**/*'

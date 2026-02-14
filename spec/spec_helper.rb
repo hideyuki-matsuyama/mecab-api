@@ -1,12 +1,17 @@
 require 'simplecov'
 require 'simplecov-lcov'
 
+# HTML レポートと LCOV レポートの両方を生成するために MultiFormatter を設定
+SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
+  SimpleCov::Formatter::HTMLFormatter,
+  SimpleCov::Formatter::LcovFormatter
+])
+
 SimpleCov::Formatter::LcovFormatter.config do |c|
   c.report_with_single_file = true
   c.single_report_path = 'coverage/lcov.info'
 end
 
-SimpleCov.formatter = SimpleCov::Formatter::LcovFormatter
 SimpleCov.start 'rails' do
   enable_coverage :branch # C1
 end

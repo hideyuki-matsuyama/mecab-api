@@ -10,8 +10,7 @@ RSpec.describe AnalysisController, type: :request do
         json_response = JSON.parse(response.body)
         expect(json_response).to eq(
           {
-            "status" => "success",
-            "data" => [
+            "payload" => [
               { "surface" => "これ", "feature" => "名詞,代名詞,一般,*,*,*,これ,コレ,コレ" },
               { "surface" => "は", "feature" => "助詞,係助詞,*,*,*,*,は,ハ,ワ" },
               { "surface" => "テスト", "feature" => "名詞,サ変接続,*,*,*,*,テスト,テスト,テスト" },
@@ -25,12 +24,26 @@ RSpec.describe AnalysisController, type: :request do
     context 'params[:text] が指定されていない' do
       let(:text) { nil }
 
-      it 'bad_request ステータスとエラーメッセージを返す' do
-        is_expected.to eq 400
-        json_response = JSON.parse(response.body)
-        expect(json_response).to eq(
-          { "status" => "error", "message" => "Text is required" }
+      it 'ok ステータスと空を返す' do
+        is_expected.to eq 200
+        expect(JSON.parse(response.body)).to eq({ "payload" => [] })
+      end
+    end
+
+    context 'MecabParser がエラーを返した場合' do
+      let(:text) { 'エラーを発生させるテキスト' }
+      let(:error_message) { 'MecabParser 内部でエラーが発生しました' }
+
+      before do
+        allow(MecabParser).to receive(:execute).and_return(
+          MecabParser::Result.new(success?: false, payload: nil, error: error_message)
         )
+      end
+
+      it 'internal_server_error ステータスとエラーメッセージを返す' do
+        is_expected.to eq 500
+        json_response = JSON.parse(response.body)
+        expect(json_response).to eq({ "message" => error_message })
       end
     end
   end

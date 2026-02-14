@@ -49,7 +49,7 @@
     "editor.defaultFormatter": "numso.prettier-standard-vscode"
   },
   "rainbow_csv.highlight_rows": true,
-  "coverage-gutters.showLineCoverage": true,
+  "coverage-gutters.showLineCoverage": false,
   "coverage-gutters.showRulerCoverage": true,
   "coverage-gutters.watchOnActivate": true,
   "editor.rulers": [

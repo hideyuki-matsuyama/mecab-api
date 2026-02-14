@@ -4,12 +4,16 @@ class AnalysisController < ApplicationController
   #
   # @param text [String] 解析対象のテキスト (params[:text] 経由で渡されます)。
   # @return [void] 解析データまたはエラーメッセージを含む JSON レスポンスをレンダリングします。
+  #   成功時: `status: 200 OK`, `json: { payload: Array<Hash> }`
+  #   失敗時: `status: 500 Internal Server Error`, `json: { message: String }`
   def parse
     text = params[:text]
-    if text.present?
-      render json: { status: "success", data: MecabParser.execute(text) }
+    result = MecabParser.execute(text)
+
+    if result.success?
+      render json: { payload: result.payload }, status: :ok
     else
-      render json: { status: "error", message: "Text is required" }, status: :bad_request
+      render json: { message: result.error }, status: :internal_server_error
     end
   end
 end

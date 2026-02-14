@@ -1,0 +1,1 @@
+class MecabParseError < StandardError; end
