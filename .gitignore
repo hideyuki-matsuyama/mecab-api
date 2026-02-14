@@ -33,3 +33,6 @@
 
 # Ignore test artifacts.
 /coverage/*
+
+# Others
+.DS_Store

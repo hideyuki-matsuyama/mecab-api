@@ -44,5 +44,9 @@ group :development, :test do
   gem "simplecov-lcov"
 end
 
+group :development do
+  gem "yard"
+end
+
 gem "natto"
 gem "redis"
