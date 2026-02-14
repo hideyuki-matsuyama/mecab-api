@@ -1,0 +1,30 @@
+# Omakase Ruby styling for Rails
+inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+
+# frozen_string_literal マジックコメントは不要
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: never
+
+# インデントの幅をチェック (通常は2スペース)
+Layout/IndentationWidth:
+  Enabled: true
+  Width: 2
+
+# インデントの一貫性をチェック
+Layout/IndentationConsistency:
+  Enabled: true
+  EnforcedStyle: normal
+
+# 連続する空白行をチェック (1行まで許可)
+Layout/EmptyLines:
+  Enabled: true
+
+# クラス定義の最初と最後の空白行を禁止
+Layout/EmptyLinesAroundClassBody:
+  Enabled: true
+  EnforcedStyle: no_empty_lines
+
+# ファイル末尾の余分な空白行を禁止
+Layout/TrailingEmptyLines:
+  Enabled: true
