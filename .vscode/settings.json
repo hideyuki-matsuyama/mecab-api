@@ -1,0 +1,58 @@
+{
+  "workbench.iconTheme": "vscode-icons",
+  "rubyLsp.enabledFeatures": {
+    "codeActions": true,
+    "diagnostics": true,
+    "documentHighlights": true,
+    "documentLink": true,
+    "documentSymbols": true,
+    "foldingRanges": true,
+    "formatting": true,
+    "hover": true,
+    "inlayHint": true,
+    "onTypeFormatting": true,
+    "selectionRanges": true,
+    "semanticHighlighting": true,
+    "completion": true,
+    "codeLens": true,
+    "definition": true,
+    "workspaceSymbol": true,
+    "signatureHelp": true,
+    "typeHierarchy": true
+  },
+  "files.trimTrailingWhitespace": true,
+  "editor.minimap.enabled": false,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "railsTestRunner.rspecCommand": "bin/rspec",
+  "remote.autoForwardPortsSource": "hybrid",
+  "githubLocalActions.dockerDesktopPath": "/Applications/Docker.app",
+  "rdbg.saveBreakpoints": true,
+  "editor.linkedEditing": true,
+  "liveshare.launcherClient": "visualStudioCode",
+  "vscode-edge-devtools.browserArgs": [
+    ""
+  ],
+  "vscode-edge-devtools.browserFlavor": "Default",
+  "workbench.startupEditor": "none",
+  "vsicons.dontShowNewVersionMessage": true,
+  "continue.enableConsole": true,
+  "geminicodeassist.displayInlineContextHint": false,
+  "rubyLsp.formatter": "rubocop",
+  "[ruby]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.formatOnPaste": true
+
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "numso.prettier-standard-vscode"
+  },
+  "rainbow_csv.highlight_rows": true,
+  "coverage-gutters.showLineCoverage": true,
+  "coverage-gutters.showRulerCoverage": true,
+  "coverage-gutters.watchOnActivate": true,
+  "editor.rulers": [
+    120
+  ]
+}
