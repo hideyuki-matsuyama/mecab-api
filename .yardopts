@@ -1,6 +1,6 @@
 --output-dir docs/
+--flat
 --markup markdown
 -
-
 README.md
 app/**/*.rb
