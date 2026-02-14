@@ -1,1 +1,3 @@
-[API Reference](https://htmlpreview.github.io/?https://github.com/hideyuki-matsuyama/mecab-api/blob/main/doc/_index.html)
+# README
+
+後で書くの。
