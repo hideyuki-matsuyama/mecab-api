@@ -1,5 +1,5 @@
 app/services/base_service.rb c7aae088ab33d6e09c2c5a8ad09210c463b0c843
 app/services/mecab_parser.rb 86a6da98714fc7e3f2516dc703e6a6363580d424
 app/errors/mecab_parse_error.rb 4396b69bc0683b174c5bda8c5774586208007128
-app/controllers/analysis_controller.rb 5dec92bc70cdfb40143bb90a8ad69818f8c06d0a
+app/controllers/analysis_controller.rb 1728159ef1426bc3cc5aa7eb455c4f3ec86e1bac
 app/controllers/application_controller.rb b3ed92dc4909a93404e663e0ce7694900556eef0

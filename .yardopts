@@ -1,7 +1,5 @@
 --output-dir docs/
---no-frames
 --markup markdown
---line-numbers
 -
 README.md
-app/services/**/*.rb
+app/**/*.rb

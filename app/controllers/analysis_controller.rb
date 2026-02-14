@@ -2,7 +2,7 @@
 class AnalysisController < ApplicationController
   # 指定されたテキストを MeCab を使用して解析します。
   #
-  # @param text [String] 解析対象のテキスト (params[:text] 経由で渡されます)。
+  # @param [String] text 解析対象のテキスト (params[:text] 経由で渡されます)。
   # @return [void] 解析データまたはエラーメッセージを含む JSON レスポンスをレンダリングします。
   #   成功時: `status: 200 OK`, `json: { payload: Array<Hash> }`
   #   失敗時: `status: 500 Internal Server Error`, `json: { message: String }`
