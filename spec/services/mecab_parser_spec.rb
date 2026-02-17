@@ -28,13 +28,25 @@ RSpec.describe MecabParser, type: :service do
       end
     end
 
-    context 'text が空の場合' do
+    context 'text がブランク' do
       let(:text) { '' }
 
       it '空の配列を含む成功結果を返す' do
-        expect(subject.success?).to be true
-        expect(subject.payload).to eq([])
-        expect(subject.error).to be_nil
+        ret = subject
+        expect(ret.success?).to be true
+        expect(ret.payload).to eq([])
+        expect(ret.error).to be_nil
+      end
+    end
+
+    context 'text が nil' do
+      let(:text) { nil }
+
+      it '空の配列を含む成功結果を返す' do
+        ret = subject
+        expect(ret.success?).to be true
+        expect(ret.payload).to eq([])
+        expect(ret.error).to be_nil
       end
     end
 

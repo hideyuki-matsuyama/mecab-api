@@ -50,7 +50,7 @@
   },
   "rainbow_csv.highlight_rows": true,
   "coverage-gutters.showLineCoverage": false,
-  "coverage-gutters.showRulerCoverage": true,
+  "coverage-gutters.showRulerCoverage": false,
   "coverage-gutters.watchOnActivate": true,
   "editor.rulers": [
     120

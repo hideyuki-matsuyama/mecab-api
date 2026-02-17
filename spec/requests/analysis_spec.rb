@@ -30,7 +30,7 @@ RSpec.describe AnalysisController, type: :request do
       end
     end
 
-    context 'MecabParser がエラーを返した場合' do
+    context 'MecabParser がエラー' do
       let(:text) { 'エラーを発生させるテキスト' }
       let(:error_message) { 'MecabParser 内部でエラーが発生しました' }
 
