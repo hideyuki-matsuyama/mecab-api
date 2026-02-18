@@ -38,3 +38,7 @@ Style/Documentation:
   Enabled: true
   Exclude:
     - 'config/**/*'
+
+# debugger の消し忘れを警告する
+Lint/Debugger:
+  Enabled: true

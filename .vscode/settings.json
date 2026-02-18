@@ -37,7 +37,6 @@
   "workbench.startupEditor": "none",
   "vsicons.dontShowNewVersionMessage": true,
   "continue.enableConsole": true,
-  "geminicodeassist.displayInlineContextHint": false,
   "rubyLsp.formatter": "rubocop",
   "[ruby]": {
     "editor.formatOnSave": true,
@@ -54,5 +53,11 @@
   "coverage-gutters.watchOnActivate": true,
   "editor.rulers": [
     120
-  ]
+  ],
+  "geminicodeassist.chat.automaticScrolling": true,
+  "geminicodeassist.inlineSuggestions.suggestionSpeed": "Fast",
+  "geminicodeassist.agentYoloMode": false,
+  "geminicodeassist.inlineSuggestions.enableAuto": false,
+  "geminicodeassist.inlineSuggestions.nextEditPredictions": true,
+  "geminicodeassist.enableTelemetry": false
 }

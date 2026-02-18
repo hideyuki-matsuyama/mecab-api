@@ -1,6 +1,6 @@
 RSpec.describe AnalysisController, type: :request do
-  describe 'POST /analyze' do
-    subject { post '/analyze', params: { text: text } }
+  describe 'GET /analyze' do
+    subject { get '/analyze', params: { text: text } }
 
     context 'params[:text] が指定されている' do
       let(:text) { 'これはテストです' }

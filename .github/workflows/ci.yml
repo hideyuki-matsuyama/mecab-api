@@ -6,47 +6,61 @@ on:
     branches: [ main ]
 
 jobs:
-  scan_ruby:
+  test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+      - name: Setup and run containers
+        run: |
+          sudo docker compose --project-name "mecab-api-ci" down --volumes --remove-orphans || true
+          sudo docker compose --project-name "mecab-api-ci" build
+          sudo docker compose --project-name "mecab-api-ci" up -d
 
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
-      
-      - name: Scan for known security vulnerabilities in gems used
-        run: bin/bundler-audit
-      
-  lint:
-    runs-on: ubuntu-latest
-    env:
-      RUBOCOP_CACHE_ROOT: tmp/rubocop
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
+          # Wait for the 'web' service container to be running
+          echo "Waiting for 'web' service container to be running..."
+          for i in $(seq 1 30); do
+            CONTAINER_ID=$(sudo docker compose --project-name "mecab-api-ci" ps -q web)
+            if [ -n "$CONTAINER_ID" ]; then
+              STATUS=$(sudo docker inspect --format '{{.State.Status}}' "$CONTAINER_ID" 2>/dev/null)
+              if [ "$STATUS" == "running" ]; then
+                echo "'web' service container is running."
+                break
+              fi
+            fi
+            echo "Waiting for 'web' service container... ($i/30)"
+            sleep 1
+          done
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+          CONTAINER_ID=$(sudo docker compose --project-name "mecab-api-ci" ps -q web)
+          if [ -z "$CONTAINER_ID" ] || [ "$(sudo docker inspect --format '{{.State.Status}}' "$CONTAINER_ID" 2>/dev/null)" != "running" ]; then
+            echo "Error: 'web' service container did not start."
+            sudo docker compose --project-name "mecab-api-ci" logs web
+            exit 1
+          fi
 
-      - name: Prepare RuboCop cache
-        uses: actions/cache@v5
-        env:
-          DEPENDENCIES_HASH: ${{ hashFiles('.ruby-version', '**/.rubocop.yml', '**/.rubocop_todo.yml', 'Gemfile.lock') }}
-        with:
-          path: ${{ env.RUBOCOP_CACHE_ROOT }}
-          key: rubocop-${{ runner.os }}-${{ env.DEPENDENCIES_HASH }}-${{ github.ref_name == github.event.repository.default_branch && github.run_id || 'default' }}
-          restore-keys: |
-            rubocop-${{ runner.os }}-${{ env.DEPENDENCIES_HASH }}-
+          # Give the application inside the container some time to fully boot up
+          echo "Giving the application some time to boot (10 seconds)..."
+          sleep 10
 
-      - name: Lint code for consistent style
-        run: bin/rubocop -f github
+      - name: Run RuboCop
+        run: sudo docker compose --project-name "mecab-api-ci" exec -T web bin/rubocop
 
+      - name: Run Brakeman
+        run: sudo docker compose --project-name "mecab-api-ci" exec -T web bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
+
+      - name: Run RSpec
+        run: sudo docker compose --project-name "mecab-api-ci" exec -T web bundle exec rspec
+
+      - name: Copy coverage artifacts
+        if: always()
+        run: sudo docker compose --project-name "mecab-api-ci" cp web:/rails/coverage .
+
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v4
+
+      - name: Teardown containers
+        if: always()
+        run: sudo docker compose --project-name "mecab-api-ci" down --volumes --remove-orphans
