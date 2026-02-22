@@ -59,6 +59,8 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: always()
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         uses: codecov/codecov-action@v4
 
       - name: Teardown containers
