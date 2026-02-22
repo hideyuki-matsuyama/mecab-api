@@ -49,4 +49,4 @@ group :development do
 end
 
 gem "natto"
-gem "redis"
+gem "redis-rails"
