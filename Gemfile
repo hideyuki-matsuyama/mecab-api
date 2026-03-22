@@ -48,5 +48,6 @@ group :development do
   gem "yard"
 end
 
+gem "dotenv"
 gem "natto"
 gem "redis-rails"

@@ -48,7 +48,7 @@ jobs:
         run: sudo docker compose --project-name "mecab-api-ci" exec -T web bin/rubocop
 
       - name: Run Brakeman
-        run: sudo docker compose --project-name "mecab-api-ci" exec -T web bin/brakeman --quiet --no-pager --skip-version-check --exit-on-error
+        run: sudo docker compose --project-name "mecab-api-ci" exec -T web bin/brakeman --quiet --no-pager --exit-on-error
 
       - name: Run RSpec
         run: sudo docker compose --project-name "mecab-api-ci" exec -T web bundle exec rspec
@@ -60,7 +60,7 @@ jobs:
       - name: Upload coverage to Codecov
         if: always()
         env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CODECOV_TOKEN: ${{ env.CODECOV_TOKEN || secrets.CODECOV_TOKEN }}
         uses: codecov/codecov-action@v5
 
       - name: Teardown containers

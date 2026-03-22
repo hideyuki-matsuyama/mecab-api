@@ -316,6 +316,7 @@ DEPENDENCIES
   brakeman
   bundler-audit
   debug
+  dotenv
   kamal
   natto
   puma (>= 5.0)
