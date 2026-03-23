@@ -23,7 +23,7 @@ RUN bundle install && \
 COPY . .
 
 # Final stage for app image
-FROM base
+FROM base AS development
 
 # Install packages needed for deployment
 # Added mecab, libmecab-dev, mecab-ipadic-utf8 for MeCab support
@@ -38,6 +38,8 @@ RUN apt-get update -qq && \
     build-essential \
     libyaml-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+RUN git config --global --add safe.directory /rails
 
 # Copy built artifacts: gems, application
 COPY --from=build /usr/local/bundle /usr/local/bundle
