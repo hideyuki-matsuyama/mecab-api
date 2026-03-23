@@ -25,6 +25,7 @@ Rails.application.configure do
 
   # Change to :null_store to avoid any caching.
   # config.cache_store = :memory_store
+  config.cache_store = :redis_cache_store, { url: ENV.fetch("REDIS_URL") }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

@@ -50,4 +50,4 @@ end
 
 gem "dotenv"
 gem "natto"
-gem "redis-rails"
+gem "redis"
