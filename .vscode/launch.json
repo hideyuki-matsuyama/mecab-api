@@ -1,0 +1,15 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "rdbg",
+      "name": "Attach with rdbg (tcp 12345)", // Specify your favorite name
+      "request": "attach",
+      "debugPort": "localhost:12345",
+      "localfsMap": "/app:${workspaceFolder}"
+    }
+  ]
+}
