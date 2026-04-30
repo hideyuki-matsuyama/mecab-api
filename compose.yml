@@ -9,8 +9,6 @@ services:
       - "3000:3000"
     environment:
       REDIS_URL: redis://redis:6379/1
-      RUBY_DEBUG_OPEN: true
-      RUBY_DEBUG_HOST: 0.0.0.0
     volumes:
       - .:/rails
       - mecab_api_storage:/rails/storage
