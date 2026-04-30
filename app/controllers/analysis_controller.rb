@@ -7,7 +7,6 @@ class AnalysisController < ApplicationController
   #   成功時: `status: 200 OK`, `json: { payload: Array<Hash> }`
   #   失敗時: `status: 500 Internal Server Error`, `json: { message: String }`
   def parse
-    debugger
     text = params[:text]
     result = MecabParser.execute(text)
 
