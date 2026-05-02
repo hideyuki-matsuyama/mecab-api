@@ -37,3 +37,4 @@
 # Others
 .DS_Store
 .rdbgrc.breakpoints
+.kamal/secrets
