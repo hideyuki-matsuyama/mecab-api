@@ -22,10 +22,6 @@ class MecabParseService < BaseService
   #
   # @param text [String] 解析対象のテキスト。
   # @return [Array<Hash>] 形態素解析の結果の配列。
-  #   各ハッシュは以下のキーを持ちます:
-  #   - `:surface` [String] 表層形。
-  #   - `:feature` [String] 品詞などの素性情報。
-  #   - `:stat` [String] 0（既知） or 1（未知）
   # @raise [MecabParseError] MeCab の内部エラーや予期せぬエラー。
   # @private
   def self.parse(text)
