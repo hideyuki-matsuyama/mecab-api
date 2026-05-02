@@ -3,7 +3,7 @@ RSpec.describe MecabParser, type: :service do
     subject { MecabParser.execute(text) }
 
     let(:text) { 'こんにちは' }
-    let(:parsed_result) { [ { surface: 'こんにちは', feature: '感動詞' } ] }
+    let(:parsed_result) { [ { surface: 'こんにちは', feature: '感動詞', stat: 0 } ] }
 
     describe 'キャッシュの制御' do
       it 'キャッシュがない場合は .parse を呼び出し、結果をキャッシュすること' do
@@ -80,13 +80,13 @@ RSpec.describe MecabParser, type: :service do
     let(:text) { 'こんにちは' }
 
     it 'MeCab のノードを正しくハッシュの配列に変換すること' do
-      node = instance_double('Natto::MeCabNode', surface: 'こんにちは', feature: '感動詞', is_eos?: false)
-      eos = instance_double('Natto::MeCabNode', is_eos?: true)
+      node = double('Natto::MeCabNode', surface: 'こんにちは', feature: '感動詞', stat: 0, is_eos?: false)
+      eos = double('Natto::MeCabNode', is_eos?: true)
       mecab_mock = instance_double(Natto::MeCab)
 
       allow(Natto::MeCab).to receive(:new).and_return(mecab_mock)
       expect(mecab_mock).to receive(:parse).with(text).and_yield(node).and_yield(eos)
-      is_expected.to eq([ { surface: 'こんにちは', feature: '感動詞' } ])
+      is_expected.to eq([ { surface: 'こんにちは', feature: '感動詞', stat: 0 } ])
     end
   end
 

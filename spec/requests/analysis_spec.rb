@@ -3,7 +3,7 @@ RSpec.describe AnalysisController, type: :request do
     subject { get '/analyze', params: { text: text } }
 
     context 'params[:text] が指定されている' do
-      let(:text) { 'これはテストです' }
+      let(:text) { 'これはテストです。python or pithon' }
 
       it 'OK ステータスと解析結果を返す' do
         is_expected.to eq 200
@@ -11,10 +11,14 @@ RSpec.describe AnalysisController, type: :request do
         expect(json_response).to eq(
           {
             "payload" => [
-              { "surface" => "これ", "feature" => "名詞,代名詞,一般,*,*,*,これ,コレ,コレ" },
-              { "surface" => "は", "feature" => "助詞,係助詞,*,*,*,*,は,ハ,ワ" },
-              { "surface" => "テスト", "feature" => "名詞,サ変接続,*,*,*,*,テスト,テスト,テスト" },
-              { "surface" => "です", "feature" => "助動詞,*,*,*,特殊・デス,基本形,です,デス,デス" }
+              { "surface" => "これ", "feature" => "名詞,代名詞,一般,*,*,*,これ,コレ,コレ", "stat" => 0 },
+              { "surface" => "は", "feature" => "助詞,係助詞,*,*,*,*,は,ハ,ワ", "stat" => 0 },
+              { "surface" => "テスト", "feature" => "名詞,サ変接続,*,*,*,*,テスト,テスト,テスト", "stat" => 0 },
+              { "surface" => "です", "feature" => "助動詞,*,*,*,特殊・デス,基本形,です,デス,デス", "stat" => 0 },
+              { "surface" => "。", "feature" => "記号,句点,*,*,*,*,。,。,。", "stat" => 0 },
+              { "surface" => "python", "feature" => "名詞,一般,*,*,*,*,*", "stat" => 1 },
+              { "surface" => "or", "feature" => "名詞,一般,*,*,*,*,*", "stat" => 1 },
+              { "surface" => "pithon", "feature" => "名詞,固有名詞,組織,*,*,*,*", "stat" => 1 }
             ]
           }
         )
