@@ -12,7 +12,15 @@ FROM base as build
 
 # Install packages needed to build gems
 RUN apt-get update -qq && apt-get install -y ruby-dev && \
-    apt-get install --no-install-recommends -y build-essential git pkg-config libmecab-dev libyaml-dev
+    apt-get install --no-install-recommends -y build-essential git pkg-config libmecab-dev libyaml-dev \
+    mecab mecab-ipadic-utf8 curl xz-utils file sudo patch
+
+# mecab-ipadic-neologd のインストール
+RUN git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git /tmp/neologd && \
+    cd /tmp/neologd && \
+    ./bin/install-mecab-ipadic-neologd -n -y -p /var/lib/mecab/dic/mecab-ipadic-neologd && \
+    cd /rails && \
+    rm -rf /tmp/neologd
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
@@ -38,6 +46,10 @@ RUN apt-get update -qq && \
     build-essential \
     libyaml-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# build ステージで生成した辞書ディレクトリだけをコピーしてデフォルトに辞書指定する
+COPY --from=build /var/lib/mecab/dic/mecab-ipadic-neologd /var/lib/mecab/dic/mecab-ipadic-neologd
+RUN sed -i 's/dicdir = .*$/dicdir = \/var\/lib\/mecab\/dic\/mecab-ipadic-neologd/' /etc/mecabrc
 
 RUN git config --global --add safe.directory /rails
 
