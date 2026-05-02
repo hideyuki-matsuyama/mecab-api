@@ -3,22 +3,19 @@ RSpec.describe MecabParser, type: :service do
     subject { MecabParser.execute(text) }
 
     let(:text) { 'こんにちは' }
-    let(:parsed_result) { [ { surface: 'こんにちは', feature: '感動詞', stat: 0 } ] }
+    let(:parsed_result) { [ { surface: 'こんにちは', feature: '感動詞,*,*,*,*,*,こんにちは,コンニチハ,コンニチワ', stat: 0 } ] }
 
     describe 'キャッシュの制御' do
       it 'キャッシュがない場合は .parse を呼び出し、結果をキャッシュすること' do
         expect(Rails.cache.read(text)).to eq(nil)
-        expect(described_class).to receive(:parse).with(text).and_return(parsed_result)
         expect(Rails.cache).to receive(:fetch).with(text, expires_in: 1.hour).and_call_original
-
         ret = subject
         expect(ret.success?).to eq(true)
         expect(ret.payload).to eq(parsed_result)
-        expect(Rails.cache.read(text)).to eq(parsed_result) # キャッシュあり
+        expect(Rails.cache.read(text)).to eq(parsed_result)
       end
 
       it 'キャッシュがある場合は .parse を呼び出さずキャッシュを返す' do
-        expect(described_class).to receive(:parse).with(text).and_return(parsed_result)
         subject # 1 回目の実行
         expect(Rails.cache.read(text)).to eq(parsed_result) # キャッシュあり
 
@@ -55,7 +52,7 @@ RSpec.describe MecabParser, type: :service do
 
       before do
         allow(described_class).to receive(:parse).and_raise(MecabParseError, error_message)
-        allow(Rails.logger).to receive(:error) # ログ出力をスタブ
+        allow(Rails.logger).to receive(:error)
       end
 
       it '失敗結果とエラーメッセージを返す' do
@@ -80,13 +77,7 @@ RSpec.describe MecabParser, type: :service do
     let(:text) { 'こんにちは' }
 
     it 'MeCab のノードを正しくハッシュの配列に変換すること' do
-      node = double('Natto::MeCabNode', surface: 'こんにちは', feature: '感動詞', stat: 0, is_eos?: false)
-      eos = double('Natto::MeCabNode', is_eos?: true)
-      mecab_mock = instance_double(Natto::MeCab)
-
-      allow(Natto::MeCab).to receive(:new).and_return(mecab_mock)
-      expect(mecab_mock).to receive(:parse).with(text).and_yield(node).and_yield(eos)
-      is_expected.to eq([ { surface: 'こんにちは', feature: '感動詞', stat: 0 } ])
+      is_expected.to eq([ { surface: 'こんにちは', feature: '感動詞,*,*,*,*,*,こんにちは,コンニチハ,コンニチワ', stat: 0 } ])
     end
   end
 
