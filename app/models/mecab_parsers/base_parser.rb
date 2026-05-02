@@ -1,7 +1,7 @@
 module MecabParsers
   # feature の構造が異なる辞書（IPADIC、UniDic など）に対応するための抽象クラス。
   class BaseParser
-    def parse_feature(surface, feature_string)
+    def self.parse_feature(surface, feature_string)
       features = feature_string.split(",")
       {
         surface: surface,
@@ -14,14 +14,14 @@ module MecabParsers
       }
     end
 
-    private
-
-    def extract_base_form(surface, features)
+    def self.extract_base_form(surface, features)
       raise NotImplementedError
     end
 
-    def extract_reading(features)
+    def self.extract_reading(features)
       raise NotImplementedError
     end
+
+    private_class_method :extract_base_form, :extract_reading
   end
 end

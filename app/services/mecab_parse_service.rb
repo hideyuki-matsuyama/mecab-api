@@ -46,7 +46,7 @@ class MecabParseService < BaseService
       MecabParsers::UnidicParser
     else
       MecabParsers::IpadicParser
-    end.new
+    end
   end
 
   private_class_method :parse, :parser
