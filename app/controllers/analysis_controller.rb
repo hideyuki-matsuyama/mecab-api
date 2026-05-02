@@ -8,7 +8,7 @@ class AnalysisController < ApplicationController
   #   失敗時: `status: 500 Internal Server Error`, `json: { message: String }`
   def parse
     text = params[:text]
-    result = MecabParser.execute(text)
+    result = MecabParseService.execute(text)
 
     if result.success?
       render json: { payload: result.payload }, status: :ok

@@ -11,14 +11,71 @@ RSpec.describe AnalysisController, type: :request do
         expect(json_response).to eq(
           {
             "payload" => [
-              { "surface" => "これ", "feature" => "名詞,代名詞,一般,*,*,*,これ,コレ,コレ", "stat" => 0 },
-              { "surface" => "は", "feature" => "助詞,係助詞,*,*,*,*,は,ハ,ワ", "stat" => 0 },
-              { "surface" => "テスト", "feature" => "名詞,サ変接続,*,*,*,*,テスト,テスト,テスト", "stat" => 0 },
-              { "surface" => "です", "feature" => "助動詞,*,*,*,特殊・デス,基本形,です,デス,デス", "stat" => 0 },
-              { "surface" => "。", "feature" => "記号,句点,*,*,*,*,。,。,。", "stat" => 0 },
-              { "surface" => "python", "feature" => "名詞,一般,*,*,*,*,*", "stat" => 1 },
-              { "surface" => "or", "feature" => "名詞,一般,*,*,*,*,*", "stat" => 1 },
-              { "surface" => "pithon", "feature" => "名詞,固有名詞,組織,*,*,*,*", "stat" => 1 }
+              {
+                "surface" => "これ",
+                "pos" => "名詞",
+                "pos_detail1" => "代名詞",
+                "pos_detail2" => "一般",
+                "pos_detail3" => "*",
+                "base_form" => "これ",
+                "reading" => "コレ"
+              }, {
+                "surface" => "は",
+                "pos" => "助詞",
+                "pos_detail1" => "係助詞",
+                "pos_detail2" => "*",
+                "pos_detail3" => "*",
+                "base_form" => "は",
+                "reading" => "ハ"
+              }, {
+                "surface" => "テスト",
+                "pos" => "名詞",
+                "pos_detail1" => "サ変接続",
+                "pos_detail2" => "*",
+                "pos_detail3" => "*",
+                "base_form" => "テスト",
+                "reading" => "テスト"
+              }, {
+                "surface" => "です",
+                "pos" => "助動詞",
+                "pos_detail1" => "*",
+                "pos_detail2" => "*",
+                "pos_detail3" => "*",
+                "base_form" => "です",
+                "reading" => "デス"
+              }, {
+                "surface" => "。",
+                "pos" => "記号",
+                "pos_detail1" => "句点",
+                "pos_detail2" => "*",
+                "pos_detail3" => "*",
+                "base_form" => "。",
+                "reading" => "。"
+              }, {
+                "surface" => "python",
+                "pos" => "名詞",
+                "pos_detail1" => "一般",
+                "pos_detail2" => "*",
+                "pos_detail3" => "*",
+                "base_form" => "python",
+                "reading" => nil
+              }, {
+                "surface" => "or",
+                "pos" => "名詞",
+                "pos_detail1" => "一般",
+                "pos_detail2" => "*",
+                "pos_detail3" => "*",
+                "base_form" => "or",
+                "reading" => nil
+              }, {
+                "surface" => "pithon",
+                "pos" => "名詞",
+                "pos_detail1" => "固有名詞",
+                "pos_detail2" => "組織",
+                "pos_detail3" => "*",
+                "base_form" => "pithon",
+                "reading" => nil
+              }
             ]
           }
         )
@@ -34,13 +91,13 @@ RSpec.describe AnalysisController, type: :request do
       end
     end
 
-    context 'MecabParser がエラー' do
+    context 'MecabParseService がエラー' do
       let(:text) { 'エラーを発生させるテキスト' }
-      let(:error_message) { 'MecabParser 内部でエラーが発生しました' }
+      let(:error_message) { 'MecabParseService 内部でエラーが発生しました' }
 
       before do
-        allow(MecabParser).to receive(:execute).and_return(
-          MecabParser::Result.new(success?: false, payload: nil, error: error_message)
+        allow(MecabParseService).to receive(:execute).and_return(
+          MecabParseService::Result.new(success?: false, payload: nil, error: error_message)
         )
       end
 

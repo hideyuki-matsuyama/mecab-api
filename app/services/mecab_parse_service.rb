@@ -1,11 +1,11 @@
 # MeCab を使用してテキストを解析するためのサービスクラス。
-class MecabParser < BaseService
+class MecabParseService < BaseService
   # 指定されたテキストを MeCab で形態素解析し、結果を返します。
   # 解析結果はキャッシュされ、1 時間有効です。
   #
   # @param text [String] 解析対象のテキスト。
   # @return [Result] 処理結果オブジェクト。
-  # @raise [MecabParseError] 内部の `parse` メソッドでエラーが発生した場合に再スローされます。
+  # @raise [MecabParseError] 解析中にエラーが発生した場合。
   def self.execute(text)
     return Result.new(success?: true, payload: []) if text.blank?
 
@@ -33,7 +33,7 @@ class MecabParser < BaseService
 
     begin
       Natto::MeCab.new.parse(text) do |mecab_node|
-        ret << { surface: mecab_node.surface, feature: mecab_node.feature, stat: mecab_node.stat } unless mecab_node.is_eos?
+        ret << parser.parse_feature(mecab_node.surface, mecab_node.feature) unless mecab_node.is_eos?
       end
     rescue Natto::MeCabError => e
       raise MecabParseError, "MeCab 内部エラー: #{e.message}"
@@ -44,5 +44,14 @@ class MecabParser < BaseService
     ret
   end
 
-  private_class_method :parse
+  def self.parser
+    case ENV["MECAB_DIC_TYPE"]
+    when "unidic"
+      MecabParsers::UnidicParser
+    else
+      MecabParsers::IpadicParser
+    end.new
+  end
+
+  private_class_method :parse, :parser
 end

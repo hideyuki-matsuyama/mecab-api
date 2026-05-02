@@ -1,9 +1,21 @@
-RSpec.describe MecabParser, type: :service do
+RSpec.describe MecabParseService, type: :service do
   describe '.execute' do
-    subject { MecabParser.execute(text) }
+    subject { described_class.execute(text) }
 
     let(:text) { 'こんにちは' }
-    let(:parsed_result) { [ { surface: 'こんにちは', feature: '感動詞,*,*,*,*,*,こんにちは,コンニチハ,コンニチワ', stat: 0 } ] }
+    let(:parsed_result) {
+      [
+        {
+          surface: "こんにちは",
+          pos: "感動詞",
+          pos_detail1: "*",
+          pos_detail2: "*",
+          pos_detail3: "*",
+          base_form: "こんにちは",
+          reading: "コンニチハ"
+        }
+      ]
+    }
 
     describe 'キャッシュの制御' do
       it 'キャッシュがない場合は .parse を呼び出し、結果をキャッシュすること' do
@@ -20,7 +32,7 @@ RSpec.describe MecabParser, type: :service do
         expect(Rails.cache.read(text)).to eq(parsed_result) # キャッシュあり
 
         expect(described_class).not_to receive(:parse).with(text)
-        ret = MecabParser.execute(text) # 2 回目の実行（subject は RSpec がキャッシュするので明示的に呼び出す）
+        ret = described_class.execute(text) # 2 回目の実行（subject は RSpec がキャッシュするので明示的に呼び出す）
         expect(ret.payload).to eq(parsed_result)
       end
     end
@@ -72,17 +84,29 @@ RSpec.describe MecabParser, type: :service do
   # private methods
 
   describe '.parse' do
-    subject { MecabParser.send(:parse, text) }
+    subject { described_class.send(:parse, text) }
 
     let(:text) { 'こんにちは' }
 
     it 'MeCab のノードを正しくハッシュの配列に変換すること' do
-      is_expected.to eq([ { surface: 'こんにちは', feature: '感動詞,*,*,*,*,*,こんにちは,コンニチハ,コンニチワ', stat: 0 } ])
+      is_expected.to eq(
+        [
+          {
+            surface: "こんにちは",
+            pos: "感動詞",
+            pos_detail1: "*",
+            pos_detail2: "*",
+            pos_detail3: "*",
+            base_form: "こんにちは",
+            reading: "コンニチハ"
+          }
+        ]
+      )
     end
   end
 
   describe '.parse のエラーハンドリング' do
-    subject { MecabParser.send(:parse, text) }
+    subject { described_class.send(:parse, text) }
 
     let(:text) { 'エラー発生テキスト' }
 
