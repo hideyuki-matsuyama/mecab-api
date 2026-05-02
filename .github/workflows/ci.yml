@@ -58,7 +58,7 @@ jobs:
         run: sudo docker compose --project-name "mecab-api-ci" cp web:/rails/coverage .
 
       - name: Upload coverage to Codecov
-        if: always()
+        if: github.actor != 'nektos/act' # actでの実行時はスキップ
         env:
           CODECOV_TOKEN: ${{ env.CODECOV_TOKEN || secrets.CODECOV_TOKEN }}
         uses: codecov/codecov-action@v6
