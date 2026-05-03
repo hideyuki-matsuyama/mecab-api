@@ -57,5 +57,5 @@ Rails.application.configure do
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
   config.hosts <<  ENV["CANONICAL_HOSTNAME"] if ENV["CANONICAL_HOSTNAME"].present?
-  config.hosts << /^[a-z0-9]+:[0-9]{4}$/
+  config.hosts << /^[a-z0-9]+:[0-9]+$/
 end
