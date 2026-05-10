@@ -31,7 +31,7 @@ RSpec.describe MecabParseService, type: :service do
         subject # 1 回目の実行
         expect(Rails.cache.read(text)).to eq(parsed_result) # キャッシュあり
 
-        expect(described_class).not_to receive(:parse).with(text)
+        expect_any_instance_of(described_class).not_to receive(:parse)
         ret = described_class.execute(text) # 2 回目の実行（subject は RSpec がキャッシュするので明示的に呼び出す）
         expect(ret.payload).to eq(parsed_result)
       end
@@ -63,7 +63,7 @@ RSpec.describe MecabParseService, type: :service do
       let(:error_message) { 'テスト用の解析エラー' }
 
       before do
-        allow(described_class).to receive(:parse).and_raise(MecabParseError, error_message)
+        allow_any_instance_of(described_class).to receive(:parse).and_raise(MecabParseError, error_message)
         allow(Rails.logger).to receive(:error)
       end
 
@@ -83,8 +83,8 @@ RSpec.describe MecabParseService, type: :service do
 
   # private methods
 
-  describe '.parse' do
-    subject { described_class.send(:parse, text) }
+  describe '#parse' do
+    subject { described_class.new(text).send(:parse) }
 
     let(:text) { 'こんにちは' }
 
@@ -103,12 +103,6 @@ RSpec.describe MecabParseService, type: :service do
         ]
       )
     end
-  end
-
-  describe '.parse のエラーハンドリング' do
-    subject { described_class.send(:parse, text) }
-
-    let(:text) { 'エラー発生テキスト' }
 
     context 'MeCab 内部で Natto::MeCabError が発生した場合' do
       let(:mecab_error_message) { 'MeCab library error' }
