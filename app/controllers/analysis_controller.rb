@@ -2,7 +2,7 @@
 class AnalysisController < ApplicationController
   # 指定されたテキストを MeCab を使用して解析します。
   #
-  # @param [String] text 解析対象のテキスト (params[:text] 経由で渡されます)。
+  # @param [String] params[:text] 解析対象のテキスト
   # @return [void] 解析データまたはエラーメッセージを含む JSON レスポンス
   def parse
     text = params[:text]
