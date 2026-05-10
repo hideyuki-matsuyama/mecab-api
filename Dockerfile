@@ -33,6 +33,9 @@ COPY . .
 # Final stage for app image
 FROM base AS development
 
+ARG REVISION
+ENV APP_REVISION=$REVISION
+
 # Install packages needed for deployment
 # Added mecab, libmecab-dev, mecab-ipadic-utf8 for MeCab support
 RUN apt-get update -qq && \
