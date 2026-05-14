@@ -8,7 +8,7 @@ image: choripon/mecab-api
 servers:
   web:
     hosts:
-      - mecab-api.rice-on-rice.jp
+      - '<%= ENV["PRODUCTION_HOST"] %>'
     cmd: bin/thrust bin/rails s -b '0.0.0.0'
 
   # job:
@@ -25,7 +25,7 @@ servers:
 #
 proxy:
   ssl: true
-  host: mecab-api.rice-on-rice.jp
+  host: '<%= ENV["PRODUCTION_HOST"] %>'
   app_port: 80
 
 # Where you keep your container images.
@@ -48,7 +48,7 @@ env:
   clear:
     RAILS_ENV: production
     RAILS_SERVE_STATIC_FILES: "true"
-    CANONICAL_HOSTNAME: mecab-api.rice-on-rice.jp
+    CANONICAL_HOSTNAME: '<%= ENV["PRODUCTION_HOST"] %>'
     THRUST_BOOT_TIMEOUT: 30
 
   # clear:
@@ -108,7 +108,7 @@ accessories:
 #       - data:/var/lib/mysql
   redis:
     image: valkey/valkey:8
-    host: mecab-api.rice-on-rice.jp
+    host: '<%= ENV["PRODUCTION_HOST"] %>'
     port: 6379
     directories:
       - data:/data
